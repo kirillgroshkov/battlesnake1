@@ -34,9 +34,6 @@ export interface Battlesnake {
     head: Coord;
     length: number;
 
-    // Used in non-standard game modes
-    shout: string;
-    squad: string;
 }
 
 export interface Board {
@@ -44,9 +41,6 @@ export interface Board {
     width: number;
     food: Coord[];
     snakes: Battlesnake[];
-
-    // Used in non-standard game modes
-    hazards: Coord[];
 }
 
 export interface GameState {
