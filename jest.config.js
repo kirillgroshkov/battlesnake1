@@ -1,4 +1,3 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-};
+  ...require('@naturalcycles/dev-lib/cfg/jest.config'),
+}

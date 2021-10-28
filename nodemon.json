@@ -1,0 +1,16 @@
+{
+  "exec": "ts-node -T ./src/index.ts",
+  "watch": ["src"],
+  "ext": "ts,js,json",
+  "ignore": ["node_modules", "src/**/*.test.ts"],
+  "env": {
+    "TZ": "UTC",
+    "NODE_ENV": "development",
+    "DEBUG": "app*,nc:*"
+  },
+  "verbose": true,
+  "events": {
+    "start": "clear"
+  },
+  "signal": "SIGKILL"
+}
