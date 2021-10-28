@@ -1,6 +1,7 @@
+import { _objectKeys, _range, _sortBy } from '@naturalcycles/js-lib'
 import { GameState, MoveResponse, Coord } from './types'
 
-type Dir = 'up' | 'right' | 'down' | 'left'
+export type Dir = 'up' | 'right' | 'down' | 'left'
 
 export function move(gameState: GameState): MoveResponse {
   const possibleMoves: Record<Dir, boolean> = {
@@ -84,11 +85,86 @@ export function move(gameState: GameState): MoveResponse {
 
   // Finally, choose a move from the available safe moves.
   // TODO: Step 5 - Select a move to make based on strategy, rather than random.
-  const safeMoves = Object.keys(possibleMoves).filter(key => possibleMoves[key as Dir])
+
+  let safeMoves = _objectKeys(possibleMoves).filter(key => possibleMoves[key])
+
+  // Project next step, aim to go where there's no snake
+  if (safeMoves.length > 1) {
+    const move1 = safeMoves[0]!
+    const move2 = safeMoves[1]!
+    const move3 = safeMoves[2]
+    if (isSnakeOnTheWay(nextCell(head, move1), move1, gameState)) {
+      safeMoves = safeMoves.filter(m => m !== move1)
+    } else if (isSnakeOnTheWay(nextCell(head, move2), move2, gameState)) {
+      safeMoves = safeMoves.filter(m => m !== move2)
+    } else if (move3 && isSnakeOnTheWay(nextCell(head, move3), move3, gameState)) {
+      safeMoves = safeMoves.filter(m => m !== move3)
+    }
+  }
+
+  // If 2 possibilities - choose one that goes to the center
+  if (safeMoves.length === 2) {
+    const bestMove = _sortBy(safeMoves.map(m => {
+      return {
+        m,
+        d: distanceness(nextCell(head, m), gameState),
+      }
+    }), r => r.d)[0]!.m
+
+    safeMoves = [bestMove]
+  }
+
   const response: MoveResponse = {
     move: safeMoves[Math.floor(Math.random() * safeMoves.length)]!,
   }
 
   console.log(`${gameState.game.id} MOVE ${gameState.turn}: ${response.move}`)
   return response
+}
+
+function nextCell(current: Coord, move: Dir): Coord {
+  const {x, y} = current
+  if (move === 'up') {
+    return {
+      x,
+      y: y + 1,
+    }
+  }
+  if (move === 'down') {
+    return {
+      x,
+      y: y - 1,
+    }
+  }
+  if (move === 'left') {
+    return {
+      x: x - 1,
+      y,
+    }
+  }
+  // right
+  return {
+    x: x + 1,
+    y,
+  }
+}
+
+function distanceness(c: Coord, s: GameState): number {
+  return Math.abs(c.x - s.board.width / 2) + Math.abs(c.y - s.board.height / 2)
+}
+
+function isSnakeOnTheWay(c: Coord, d: Dir, s: GameState): boolean {
+  if (d === 'up') {
+    return s.you.body.some(cBody => cBody.x === c.x && cBody.y > c.y)
+  }
+
+  if (d === 'down') {
+    return s.you.body.some(cBody => cBody.x === c.x && cBody.y < c.y)
+  }
+
+  if (d === 'left') {
+    return s.you.body.some(cBody => cBody.y === c.y && cBody.x < c.x)
+  }
+
+  return s.you.body.some(cBody => cBody.y === c.y && cBody.x > c.x)
 }

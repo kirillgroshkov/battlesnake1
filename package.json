@@ -4,18 +4,8 @@
   "description": "A simple Battlesnake written in TypeScript",
   "scripts": {
     "tunnel": "./ngrok http 8080",
-    "start": "tsc && node build/index.js",
-    "serve": "nodemon",
-    "test": "jest --silent"
+    "serve": "nodemon"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BattlesnakeOfficial/starter-snake-typescript.git"
-  },
-  "keywords": [],
-  "author": "BattlesnakeOfficial",
-  "license": "MIT",
-  "homepage": "https://github.com/BattlesnakeOfficial/starter-snake-typescript#readme",
   "dependencies": {
     "@naturalcycles/dev-lib": "^12.11.4",
     "@naturalcycles/js-lib": "^14.48.0",
@@ -27,5 +17,13 @@
     "jest": "^27.0.6",
     "nodemon": "^2.0.14",
     "typescript": "^4.3.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BattlesnakeOfficial/starter-snake-typescript.git"
+  },
+  "keywords": [],
+  "author": "BattlesnakeOfficial",
+  "license": "MIT",
+  "homepage": "https://github.com/BattlesnakeOfficial/starter-snake-typescript#readme"
 }

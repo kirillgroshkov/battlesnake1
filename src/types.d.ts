@@ -1,5 +1,7 @@
 // See https://docs.battlesnake.com/references/api for all details and examples.
 
+import { Dir } from './logic'
+
 export interface InfoResponse {
   apiversion: string
   author?: string
@@ -10,7 +12,7 @@ export interface InfoResponse {
 }
 
 export interface MoveResponse {
-  move: string
+  move: Dir
   shout?: string
 }
 
